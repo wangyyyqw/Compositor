@@ -64,11 +64,15 @@ nonisolated enum ImageImportError: LocalizedError {
     case unreadable, unsupported, tooLarge, tooManyFrames, locked
     var errorDescription: String? {
         switch self {
-        case .unreadable: "The image could not be read. It may be damaged or unavailable."
-        case .unsupported: "Choose a JPEG, PNG, GIF, HEIC, HEIF, TIFF, WebP, PDF, or Photoshop (PSD) file."
-        case .locked: "This PDF is password-protected. Save an unlocked copy, then import that."
-        case .tooLarge: "This import exceeds the current \(DocumentLimits.documentBudgetMegapixels)-megapixel document budget or \(DocumentLimits.maxSide.formatted())-pixel side limit."
-        case .tooManyFrames: "This animation has more than \(GIFTimelineLimits.maxFrames.formatted()) frames, which exceeds the current timeline limit."
+        case .unreadable: "The image could not be read. It may be damaged or unavailable.".localized
+        case .unsupported: "Choose a JPEG, PNG, GIF, HEIC, HEIF, TIFF, WebP, PDF, or Photoshop (PSD) file.".localized
+        case .locked: "This PDF is password-protected. Save an unlocked copy, then import that.".localized
+        case .tooLarge:
+            "This import exceeds the current %lld-megapixel document budget or %lld-pixel side limit.".localizedFormat(
+                DocumentLimits.documentBudgetMegapixels, DocumentLimits.maxSide)
+        case .tooManyFrames:
+            "This animation has more than %lld frames, which exceeds the current timeline limit.".localizedFormat(
+                GIFTimelineLimits.maxFrames)
         }
     }
 }
@@ -137,7 +141,7 @@ actor ImageImporter {
             context.drawPDFPage(page)
             guard let image = context.makeImage() else { throw ImageImportError.unreadable }
             return ImportedImage(image: image, thumbnail: try PixelAdjust.thumbnail(of: image),
-                                 name: document.numberOfPages == 1 ? name : "Page \(number)")
+                                 name: document.numberOfPages == 1 ? name : "Page %lld".localizedFormat(number))
         }
     }
 

@@ -5,7 +5,8 @@ struct LassoControls: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            Text(session.tool == .marquee ? "Marquee" : session.tool == .wand ? "Magic" : "Lasso").font(ToolHeaderStyle.titleFont)
+            Text((session.tool == .marquee ? "Marquee" : session.tool == .wand ? "Magic" : "Lasso").localized)
+                .font(ToolHeaderStyle.titleFont)
             ScrollView(.horizontal) {
                 HStack(spacing: 12) {
                     if session.tool == .marquee {
@@ -13,7 +14,7 @@ struct LassoControls: View {
                             session.cancelLasso()
                             session.marqueeKind = kind
                         })) {
-                            ForEach(LassoKind.marqueeChoices, id: \.self) { Text($0.rawValue).tag($0) }
+                            ForEach(LassoKind.marqueeChoices, id: \.self) { Text($0.rawValue.localized).tag($0) }
                         }
                         .pickerStyle(.segmented).labelsHidden().fixedSize()
                         .help("Press M to switch between Rectangle and Ellipse")
@@ -23,7 +24,7 @@ struct LassoControls: View {
                             session.cancelLasso()
                             session.wandMode = mode
                         })) {
-                            ForEach(WandMode.allCases, id: \.self) { Text($0.rawValue).tag($0) }
+                            ForEach(WandMode.allCases, id: \.self) { Text($0.rawValue.localized).tag($0) }
                         }
                         .pickerStyle(.segmented).labelsHidden().fixedSize()
                         .help("Press Tab to switch between Wand and Object")
@@ -33,7 +34,7 @@ struct LassoControls: View {
                             session.cancelLasso()
                             session.lassoKind = kind
                         })) {
-                            ForEach(LassoKind.lassoChoices, id: \.self) { Text($0.rawValue).tag($0) }
+                            ForEach(LassoKind.lassoChoices, id: \.self) { Text($0.rawValue.localized).tag($0) }
                         }
                         .pickerStyle(.segmented).labelsHidden().fixedSize()
                         .help("Press L to switch between Freehand and Polygonal")
@@ -41,7 +42,7 @@ struct LassoControls: View {
                     // Shows held Shift/Option (or an outline's mode) live; clicking sets the choice.
                     Picker("Mode", selection: Binding(get: { session.displayedSelectionMode },
                                                       set: { session.selectionModeChoice = $0 })) {
-                        ForEach(SelectionMode.allCases, id: \.self) { Text($0.rawValue).tag($0) }
+                        ForEach(SelectionMode.allCases, id: \.self) { Text($0.rawValue.localized).tag($0) }
                     }
                                                       .pickerStyle(.segmented).labelsHidden().fixedSize()
                                                       .help("Hold Shift to add or Option to subtract for one outline")
@@ -50,7 +51,9 @@ struct LassoControls: View {
                     // Rectangles snap to whole pixels, so smoothing doesn't apply (as in Photoshop); ellipses curve.
                     if session.tool == .lasso || session.tool == .wand || (session.tool == .marquee && session.marqueeKind == .ellipse) {
                         Toggle("Anti-alias", isOn: $session.selectionAntialiased)
-                            .help(session.tool == .wand && session.wandMode == .object ? "Smooth the detected object outline; turn off for the raw pixel mask" : "Smooth selection edges; turn off for hard pixel edges")
+                            .help((session.tool == .wand && session.wandMode == .object
+                                   ? "Smooth the detected object outline; turn off for the raw pixel mask"
+                                   : "Smooth selection edges; turn off for hard pixel edges").localized)
                     }
                     Divider().frame(height: 18)
                     modifyControls
@@ -81,7 +84,7 @@ struct LassoControls: View {
             }
             .help("How far each color channel (0–255) can differ from the clicked color and still be selected")
             Picker("Sample Size", selection: $session.wandSettings.sampleSize) {
-                ForEach(WandSampleSize.allCases, id: \.self) { Text($0.title).tag($0) }
+                ForEach(WandSampleSize.allCases, id: \.self) { Text($0.title.localized).tag($0) }
             }
             .labelsHidden().fixedSize()
             .help("Match the clicked pixel, or the average of the pixels around it")
@@ -137,8 +140,8 @@ struct LassoControls: View {
                     } label: {
                         SelectionModifyIcon(operation: operation).frame(width: 14, height: 14)
                     }
-                    .accessibilityLabel(operation.rawValue)
-                    .help("\(operation.rawValue) the selection by this many pixels")
+                    .accessibilityLabel(operation.rawValue.localized)
+                    .help("%@ the selection by this many pixels".localizedFormat(operation.rawValue.localized))
                 }
             }
         }
@@ -258,7 +261,7 @@ struct SelectionAmountSheet: View {
                     .multilineTextAlignment(.trailing).focused($focused)
                     .unitSuffix("px")
             }
-            Text("Enter a whole number from 1 to \(maximum) px.")
+            Text("Enter a whole number from 1 to %@ px.".localizedFormat(maximum))
                 .font(.callout).foregroundStyle(.secondary)
                 .opacity(amount == nil ? 1 : 0)
             Divider()

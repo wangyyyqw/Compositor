@@ -28,7 +28,7 @@ struct LayersPanel: View {
                 }
             } else {
                 LayersUnavailableView("No layers yet", systemImage: "square.3.layers.3d") {
-                    Text(session.document == nil ? "Create a canvas or import a file." : "Import a file or add a blank layer.")
+                    Text((session.document == nil ? "Create a canvas or import a file." : "Import a file or add a blank layer.").localized)
                 }
             }
             Divider()
@@ -81,24 +81,24 @@ struct LayersFooter: View {
             LayerMaskMenu(session: session)
             // Two menus, as the menu bar has: the Image menu's adjustments, then the Filter menu's filters.
             FooterMenu(systemName: "circle.lefthalf.filled", items: AdjustmentKind.imageAdjustments.map { kind in
-                (kind.rawValue, { session.addAdjustment(kind) })
+                (kind.rawValue.localized, { session.addAdjustment(kind) })
             })
                 .help("New adjustment layer").accessibilityLabel("New adjustment layer")
                 .disabled(!session.layersLookEditable)
             FooterMenu(items: AdjustmentKind.filters.map { kind in
-                (kind.rawValue, { session.addAdjustment(kind) })
+                (kind.rawValue.localized, { session.addAdjustment(kind) })
             }) { CheckerCircleIcon() }
                 .help("New filter layer").accessibilityLabel("New filter layer")
                 .disabled(!session.layersLookEditable)
             FooterMenu(systemName: "sparkles", items: LayerEffectKind.allCases.map { kind in
-                (kind.rawValue + "…", { session.addEffect(kind) })
+                ((kind.rawValue + "…").localizedMenuTitle(), { session.addEffect(kind) })
             })
                 .help("Add layer effect").accessibilityLabel("Layer effects")
                 .accessibilityIdentifier("layerEffects").disabled(!session.layersLookEditable || session.activeLayer?.isGroup != false || session.activeLayer?.asset == nil)
             Spacer()
             Button { session.deleteLayerOrMask() } label: { FooterIcon(systemName: "trash") }
-                .help(session.selectedEffect != nil ? "Delete selected effect" : session.isMaskSelected ? "Delete layer mask" : session.selectedLayerIDs.count > 1 ? "Delete selected layers" : "Delete selected layer")
-                .accessibilityLabel(session.selectedEffect != nil ? "Delete selected effect" : session.isMaskSelected ? "Delete layer mask" : session.selectedLayerIDs.count > 1 ? "Delete selected layers" : "Delete selected layer")
+                .help((session.selectedEffect != nil ? "Delete selected effect" : session.isMaskSelected ? "Delete layer mask" : session.selectedLayerIDs.count > 1 ? "Delete selected layers" : "Delete selected layer").localized)
+                .accessibilityLabel((session.selectedEffect != nil ? "Delete selected effect" : session.isMaskSelected ? "Delete layer mask" : session.selectedLayerIDs.count > 1 ? "Delete selected layers" : "Delete selected layer").localized)
                 .accessibilityIdentifier("deleteLayer")
                 .disabled(!session.layersLookEditable || session.activeLayer == nil)
         }

@@ -34,7 +34,7 @@ struct GIFTimeline: View {
                 }
                 .buttonStyle(.plain)
                 .disabled(!canPlay)
-                .help(isPlaying ? "Pause" : "Play")
+                .help((isPlaying ? "Pause" : "Play").localized)
                 // The delay as a menu of common ones, as the Layers panel's adjustment button offers its kinds.
                 Menu { delayMenu } label: {
                     Text(timing.mode == .uniform ? "\(Int(delay.rounded()))ms" : originalDelays(spaced: false))
@@ -106,12 +106,12 @@ struct GIFTimeline: View {
             Button("Delete Frame") { Task { await onDeleteFrame(frame.index) } }.disabled(!canEditFrames || frames.count < 2)
         }
         .id(frame.index)
-        .accessibilityLabel("Frame \(number)")
+        .accessibilityLabel("Frame %@".localizedFormat(number))
     }
 
     /// Every frame for the same time, from a fast 20 ms up to a second, or each for the GIF's own.
     @ViewBuilder private var delayMenu: some View {
-        Toggle("\(originalDelays()) · Original", isOn: Binding(get: { timing.mode != .uniform }, set: { on in
+        Toggle("%@ · Original".localizedFormat(originalDelays()), isOn: Binding(get: { timing.mode != .uniform }, set: { on in
             guard on else { return }
             var original = timing
             original.mode = .perFrame
@@ -119,7 +119,7 @@ struct GIFTimeline: View {
         }))
         Divider()
         ForEach([20, 33, 40, 50, 67, 80, 100, 125, 150, 200, 250, 500, 1000], id: \.self) { milliseconds in
-            Toggle("\(milliseconds) ms · \(fps(milliseconds)) fps", isOn: Binding(
+            Toggle("%lld ms · %@ fps".localizedFormat(milliseconds, fps(milliseconds)), isOn: Binding(
                 get: { timing.mode == .uniform && Int(delay.rounded()) == milliseconds },
                 set: { if $0 { setDelay(Double(milliseconds)) } }))
         }

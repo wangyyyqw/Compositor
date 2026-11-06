@@ -61,6 +61,15 @@ struct ShortcutChord: Codable, Equatable, Hashable {
             + (modifiers & 8 != 0 ? "⇧" : "") + (modifiers & 1 != 0 ? "⌘" : "")
             + (special[key] ?? key.uppercased())
     }
+    /// 供快捷键面板显示的同一组合键。`label` 保持英文，因为匹配和测试也使用它。
+    var displayLabel: String {
+        if isNone { return "None".localized }
+        let special = ["\u{7f}": "Delete", "\r": "Return", "\u{1b}": "Esc", "\t": "Tab", " ": "Space",
+                       "\u{f702}": "←", "\u{f703}": "→", "\u{f701}": "↓", "\u{f700}": "↑"]
+        return (modifiers & 4 != 0 ? "⌃" : "") + (modifiers & 2 != 0 ? "⌥" : "")
+            + (modifiers & 8 != 0 ? "⇧" : "") + (modifiers & 1 != 0 ? "⌘" : "")
+            + (special[key].map(\.localized) ?? key.uppercased())
+    }
     func event(like event: NSEvent) -> NSEvent? {
         let codes: [String: UInt16] = ["\u{7f}": 51, "\r": 36, "\u{1b}": 53, "\t": 48, " ": 49,
                                        "\u{f702}": 123, "\u{f703}": 124, "\u{f701}": 125, "\u{f700}": 126,
@@ -79,6 +88,9 @@ struct ShortcutDefinition: Identifiable {
     let original: ShortcutChord
     var id: String { "\(group):\(title)" }
     var isMenu: Bool { group == "Menus" }
+    /// 稳定的标题和分组保持英文；快捷键面板显示这些字段。
+    var displayTitle: String { title.localized }
+    var displayGroup: String { group.localized }
 
     static let all: [ShortcutDefinition] = {
         func entry(_ title: String, _ key: String, _ modifiers: Int = 0, menu: Bool = false) -> ShortcutDefinition {
@@ -186,7 +198,7 @@ final class ShortcutSettings {
         return chord(definition)
     }
     func show() {
-        panel.show(title: "Keyboard Shortcuts", content: KeyboardShortcutsSheet(settings: self))
+        panel.show(title: "Keyboard Shortcuts".localized, content: KeyboardShortcutsSheet(settings: self))
     }
     func close() { panel.close() }
     func save(_ values: [String: ShortcutChord]) {
@@ -200,14 +212,18 @@ final class ShortcutSettings {
         for definition in ShortcutDefinition.all {
             let chord = values[definition.id] ?? definition.original
             if chord.isNone { continue }
-            guard chord.key.count == 1, (0...15).contains(chord.modifiers) else { return "Choose a single key with optional modifiers." }
+            guard chord.key.count == 1, (0...15).contains(chord.modifiers) else {
+                return "Choose a single key with optional modifiers.".localized
+            }
             if definition.group == "Text Editing", chord.modifiers & 7 == 0 {
-                return "Text-editing shortcuts need Command, Option, or Control so they do not replace normal typing."
+                return "Text-editing shortcuts need Command, Option, or Control so they do not replace normal typing.".localized
             }
             if [ShortcutChord("q", 1), ShortcutChord(",", 1), ShortcutChord("m", 3)].contains(chord) {
-                return "\(chord.label) is reserved by macOS."
+                return "%@ is reserved by macOS.".localizedFormat(chord.displayLabel)
             }
-            if let other = assigned[chord] { return "\(chord.label) is assigned to both \(other) and \(definition.title)." }
+            if let other = assigned[chord] {
+                return "%@ is assigned to both %@ and %@.".localizedFormat(chord.displayLabel, other.localized, definition.displayTitle)
+            }
             assigned[chord] = definition.title
         }
         return nil
@@ -276,10 +292,14 @@ private struct KeyboardShortcutsSheet: View {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 6) {
                     ForEach(["Menus", "Canvas & Layers", "Text Editing"], id: \.self) { group in
-                        Text(group).font(.headline).padding(.top, 8)
-                        ForEach(ShortcutDefinition.all.filter { $0.group == group && (search.isEmpty || $0.title.localizedCaseInsensitiveContains(search)) }) { definition in
+                        Text(group.localized).font(.headline).padding(.top, 8)
+                        ForEach(ShortcutDefinition.all.filter {
+                            $0.group == group && (search.isEmpty
+                                || $0.title.localizedCaseInsensitiveContains(search)
+                                || $0.displayTitle.localizedCaseInsensitiveContains(search))
+                        }) { definition in
                             HStack {
-                                Text(definition.title)
+                                Text(definition.displayTitle)
                                 Spacer()
                                 ShortcutRecorder(chord: draft[definition.id] ?? definition.original,
                                     recording: recording == definition.id,
@@ -336,8 +356,8 @@ private struct ShortcutRecorder: NSViewRepresentable {
     func makeNSView(context: Context) -> RecorderButton { RecorderButton() }
     func updateNSView(_ button: RecorderButton, context: Context) {
         button.start = start; button.finish = finish; button.recording = recording
-        button.title = recording ? "Press keys…" : chord.label
-        button.setAccessibilityLabel(recording ? "Press a shortcut" : chord.label)
+        button.title = recording ? "Press keys…".localized : chord.displayLabel
+        button.setAccessibilityLabel(recording ? "Press a shortcut".localized : chord.displayLabel)
         if recording, button.window?.firstResponder !== button { button.window?.makeFirstResponder(button) }
     }
     final class RecorderButton: NSButton {

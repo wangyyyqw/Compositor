@@ -270,17 +270,17 @@ extension EditorSession {
         if let draft = shapeDraft {
             if draft.kind == .line {
                 guard let end = draft.end else { return nil }
-                return ("\(Int(hypot(end.x - draft.anchor.x, end.y - draft.anchor.y).rounded())) px", end)
+                return ("%lld px".localizedFormat(Int(hypot(end.x - draft.anchor.x, end.y - draft.anchor.y).rounded())), end)
             }
             let rect = draft.rect
             let corners = [CGPoint(x: rect.minX, y: rect.minY), CGPoint(x: rect.maxX, y: rect.minY),
                            CGPoint(x: rect.minX, y: rect.maxY), CGPoint(x: rect.maxX, y: rect.maxY)]
             guard let corner = farthest(corners, from: draft.anchor) else { return nil }
-            return ("\(Int(rect.width.rounded())) × \(Int(rect.height.rounded())) px", corner)
+            return ("%lld × %lld px".localizedFormat(Int(rect.width.rounded()), Int(rect.height.rounded())), corner)
         }
         if let draft = lassoDraft, let anchor = draft.anchor, draft.points.count == 4, let size = selectionSize,
            let corner = farthest(draft.points, from: anchor) {
-            return ("\(size.width) × \(size.height) px", corner)
+            return ("%lld × %lld px".localizedFormat(size.width, size.height), corner)
         }
         return nil
     }
@@ -316,7 +316,8 @@ extension EditorSession {
         }
         guard canEditLayers, document != nil, rect.width >= 1, rect.height >= 1 else { return }
         guard Int(rect.width) * Int(rect.height) <= Self.maxShapePixels else {
-            brushError = "That shape is too large. A shape can cover up to \(DocumentLimits.maxSurfaceMegapixels) megapixels."
+            brushError = "That shape is too large. A shape can cover up to %lld megapixels.".localizedFormat(
+                DocumentLimits.maxSurfaceMegapixels)
             return
         }
         do {

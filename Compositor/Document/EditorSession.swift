@@ -992,7 +992,7 @@ final class EditorSession {
         }
         defer { for folder in folders { folder.stopAccessingSecurityScopedResource() } }
         if !empty.isEmpty {
-            let message = empty.map { "“\($0)” has no images to import." }.joined(separator: "\n")
+            let message = empty.map { "“%@” has no images to import.".localizedFormat($0) }.joined(separator: "\n")
             importError = [importError, message].compactMap { $0 }.joined(separator: "\n\n")
         }
         guard !urls.isEmpty else { return }
@@ -1071,7 +1071,8 @@ final class EditorSession {
                     }
                     for page in pages.reversed() { insert(page, centeredAt: point) }
                 } else if PSDReader.matches(url) {
-                    beginPSDReading(title: "Open “\(url.lastPathComponent)”?", confirmTitle: "Import")
+                    beginPSDReading(title: "Open “%@”?".localizedFormat(url.lastPathComponent),
+                                    confirmTitle: "Import".localized)
                     let imported: PSDImport
                     do {
                         let parsed = try await ImageImporter.shared.loadPhotoshop(url, remainingPixels: DocumentLimits.documentPixelBudget - usedPixels)
@@ -1203,7 +1204,7 @@ final class EditorSession {
             refreshCanvasPreview?()
         } catch {
             guard gifFrameSelectionRequestID == requestID else { return }
-            importError = "Couldn’t read GIF frame \(index + 1): \(error.localizedDescription)"
+            importError = "Couldn’t read GIF frame %lld: %@".localizedFormat(index + 1, error.localizedDescription)
         }
     }
 
@@ -1266,7 +1267,7 @@ final class EditorSession {
     /// One Photoshop artboard's layers as this tab's document, after the conversion report when there's anything in it.
     func importArtboard(_ parsed: PSDDocument, named name: String) async {
         do {
-            beginPSDReading(title: "Open “\(name)”?", confirmTitle: "Import")
+            beginPSDReading(title: "Open “%@”?".localizedFormat(name), confirmTitle: "Import".localized)
             let imported: PSDImport
             do {
                 let assets = try await ImageImporter.shared.photoshopAssets(parsed)

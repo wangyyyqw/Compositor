@@ -17,8 +17,9 @@ nonisolated enum GIFExportError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .tooLarge:
-            "Animation export supports up to \(GIFTimelineLimits.maxFrames.formatted()) frames, \(GIFExporter.pixelBudget / 1_000_000) megapixels across all exported frames, and 512 MiB of encoded data. Reduce the export size or frame count."
-        case .invalidTimeline: "The selected animation timeline is missing or invalid."
+            "Animation export supports up to %lld frames, %lld megapixels across all exported frames, and 512 MiB of encoded data. Reduce the export size or frame count.".localizedFormat(
+                GIFTimelineLimits.maxFrames, GIFExporter.pixelBudget / 1_000_000)
+        case .invalidTimeline: "The selected animation timeline is missing or invalid.".localized
         }
     }
 }

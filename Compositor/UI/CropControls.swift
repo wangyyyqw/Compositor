@@ -16,10 +16,10 @@ struct CropControls: View {
                 // Grouped by shape: free and the canvas's own proportions, square, wide, tall.
                 ForEach(ratioGroups.indices, id: \.self) { index in
                     if index > 0 { Divider() }
-                    ForEach(ratioGroups[index], id: \.self) { Text($0) }
+                    ForEach(ratioGroups[index], id: \.self) { Text($0.localized) }
                 }
                 if !ratios.contains(session.cropRatioChoice) {
-                    Text(session.cropRatioChoice).tag(session.cropRatioChoice)
+                    Text(session.cropRatioChoice.localized).tag(session.cropRatioChoice)
                 }
                 Divider()
                 Text("Custom…").tag("Custom")
@@ -45,7 +45,7 @@ struct CropControls: View {
                     }.padding(16).frame(width: 280)
                 }
             if let rect = session.cropRect {
-                Text("\(Int(rect.width)) × \(Int(rect.height)) px").monospacedDigit()
+                Text("%lld × %lld px".localizedFormat(Int(rect.width), Int(rect.height))).monospacedDigit()
             }
             Spacer()
             Button("Cancel") { session.cancelCrop() }.disabled(session.cropRect == nil)

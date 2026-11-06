@@ -214,7 +214,7 @@ final class WarpStroke {
 extension EditorSession {
     func beginWarp(at point: CGPoint) {
         guard canPaint, !isMaskSelected, let active = activeLayer, let document else {
-            brushError = isMaskSelected ? "Smudge and Liquify work on a layer's pixels, not its mask." : paintRefusal
+            brushError = isMaskSelected ? "Smudge and Liquify work on a layer's pixels, not its mask.".localized : paintRefusal
             return
         }
         pauseGIFForEditing(for: active.id)

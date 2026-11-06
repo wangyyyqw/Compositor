@@ -61,6 +61,9 @@ jobs:
           -scheme Compositor
           -onlyUsePackageVersionsFromResolvedFile
 
+      - name: Check Simplified Chinese localization
+        run: scripts/sync-localizations.sh --strict
+
       # Optimized, as in a release, still testable: unoptimized, pixel loops (the app's and the tests' own) take
       # many times longer.
       - name: Build for testing

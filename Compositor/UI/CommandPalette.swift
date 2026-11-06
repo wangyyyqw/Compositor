@@ -7,6 +7,8 @@ struct CommandPaletteEntry: Identifiable {
     let id: String
     /// Its full path, as the palette shows it and searches it: "Filter › Gaussian Blur…".
     let title: String
+    /// 输入时实际搜索的文字，可与 `title` 不同：命令面板翻译后英文名仍可搜索，中英文都能找到同一工具。
+    let searchText: String?
     /// Its current key, "⌥⌘P", or nil.
     let shortcut: String?
     /// False when its menu item is disabled right now: listed, greyed, and never run.
@@ -16,10 +18,11 @@ struct CommandPaletteEntry: Identifiable {
     let isOn: Bool
     let perform: @MainActor () -> Void
 
-    init(id: String, title: String? = nil, shortcut: String?, isEnabled: Bool, isOn: Bool = false,
+    init(id: String, title: String? = nil, searchText: String? = nil, shortcut: String?, isEnabled: Bool, isOn: Bool = false,
          perform: @escaping @MainActor () -> Void) {
         self.id = id
         self.title = title ?? id
+        self.searchText = searchText
         self.shortcut = shortcut
         self.isEnabled = isEnabled
         self.isOn = isOn
@@ -88,7 +91,7 @@ enum CommandPaletteSearch {
     /// order, enabled first.
     static func rank(_ entries: [CommandPaletteEntry], query: String) -> [CommandPaletteEntry] {
         let scored = entries.enumerated().compactMap { index, entry in
-            score(query, in: entry.title).map { (entry, $0, index) }
+            score(query, in: entry.searchText ?? entry.title).map { (entry, $0, index) }
         }
         return scored.sorted { a, b in
             if a.0.isEnabled != b.0.isEnabled { return a.0.isEnabled }
@@ -175,11 +178,17 @@ extension CommandPaletteEntry {
     static func layerCommands(for session: EditorSession) -> [CommandPaletteEntry] {
         let canAdd = session.canEditMask && session.activeLayer?.mask == nil
         let selected = session.selection != nil
+        let layer = "Layer".localized
+        func title(_ key: String) -> String { layer + " › " + key.localized }
         return [
             CommandPaletteEntry(id: selected ? "Layer › Add Layer Mask from Selection" : "Layer › Add Layer Mask",
+                                title: title(selected ? "Add Layer Mask from Selection" : "Add Layer Mask"),
+                                searchText: "Layer › \(selected ? "Add Layer Mask from Selection" : "Add Layer Mask")",
                                 shortcut: nil, isEnabled: canAdd,
                                 perform: { [weak session] in session?.addMask(revealing: true) }),
             CommandPaletteEntry(id: selected ? "Layer › Add Layer Mask Hiding Selection" : "Layer › Add Layer Mask (Hide All)",
+                                title: title(selected ? "Add Layer Mask Hiding Selection" : "Add Layer Mask (Hide All)"),
+                                searchText: "Layer › \(selected ? "Add Layer Mask Hiding Selection" : "Add Layer Mask (Hide All)")",
                                 shortcut: nil, isEnabled: canAdd,
                                 perform: { [weak session] in session?.addMask(revealing: false) }),
         ]
@@ -216,7 +225,9 @@ extension CommandPaletteEntry {
             ("Zoom", "Z", .zoom, nil),
         ]
         return tools.map { name, key, tool, setup in
-            CommandPaletteEntry(id: "Tool › \(name)", shortcut: key, isEnabled: session.document != nil,
+            let title = "Tool".localized + " › " + name.localized
+            return CommandPaletteEntry(id: "Tool › \(name)", title: title, searchText: "\(title) Tool › \(name)",
+                                shortcut: key, isEnabled: session.document != nil,
                                 perform: { [weak session] in
                                     guard let session else { return }
                                     session.selectTool(tool)

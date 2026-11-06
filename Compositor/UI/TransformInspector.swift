@@ -8,7 +8,7 @@ struct TransformInspector: View {
     }
     var body: some View {
         HStack(spacing: 12) {
-          Text(session.transformTargetsMask ? "Transform Mask" : "Transform").font(ToolHeaderStyle.titleFont)
+          Text((session.transformTargetsMask ? "Transform Mask" : "Transform").localized).font(ToolHeaderStyle.titleFont)
               .padding(.leading, 18)
           // Command flips Auto Select while it's held, and the box shows it flipped (see HeldModifiers).
           Toggle("Auto Select", isOn: Binding(get: { session.transformAutoSelect != held.contains(.command) },
@@ -40,7 +40,7 @@ struct TransformInspector: View {
                 Picker("Sampling", selection: Binding(get: { value.sampling }, set: { sampling in
                     change { $0.sampling = sampling }
                 })) {
-                    ForEach(LayerSampling.allCases, id: \.self) { Text($0.rawValue).tag($0) }
+                    ForEach(LayerSampling.allCases, id: \.self) { Text($0.rawValue.localized).tag($0) }
                 }.frame(width: 170)
                 ToolHeaderPill(segmentWidth: 34) {
                     Button { change { $0.flipX.toggle() } } label: {
@@ -191,10 +191,10 @@ private struct AlignButton: View {
     private func row(_ alignments: [LayerAlignment], _ distributions: [LayerDistribution]) -> some View {
         HStack(spacing: 2) {
             ForEach(alignments, id: \.self) { alignment in
-                icon(alignment.symbol, "Align " + alignment.rawValue) { session.alignLayers(alignment) }
+                icon(alignment.symbol, "Align %@".localizedFormat(alignment.rawValue.localized)) { session.alignLayers(alignment) }
             }
             ForEach(distributions, id: \.self) { distribution in
-                icon(distribution.symbol, "Distribute " + distribution.rawValue + " (three or more layers)") {
+                icon(distribution.symbol, "Distribute %@ (three or more layers)".localizedFormat(distribution.rawValue.localized)) {
                     session.distributeLayers(distribution)
                 }
                 .disabled(!session.canDistributeLayers)

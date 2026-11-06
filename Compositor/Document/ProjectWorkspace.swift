@@ -10,6 +10,8 @@ final class ProjectTab: Identifiable {
     /// Shown until the project is saved: Untitled, the opened file's name, or a Photoshop artboard's.
     var defaultName: String
     var title: String { session.projectURL?.deletingPathExtension().lastPathComponent ?? defaultName }
+    /// 标签页和窗口显示的标题；保存的名称保持英文，项目处理逻辑不受影响。
+    var displayTitle: String { title.localizedProjectTitle() }
     init(name: String) {
         defaultName = name
         session = EditorSession()
@@ -108,6 +110,7 @@ final class ProjectWorkspace {
             panel.allowedContentTypes = [.compositorProject]
             panel.allowsMultipleSelection = true
             panel.treatsFilePackagesAsDirectories = false
+            panel.title = "Open Project".localized
             let response = if let window { await panel.beginSheetModal(for: window) } else { await panel.begin() }
             guard response == .OK else { return false }
             urls = panel.urls
@@ -263,9 +266,13 @@ final class ProjectWorkspace {
         }
         let used = target.session.document?.layers.reduce(0) { $0 + ($1.asset.map { $0.image.width * $0.image.height } ?? 0) } ?? 0
         let added = copied.reduce(0) { $0 + ($1.asset.map { $0.image.width * $0.image.height } ?? 0) }
-        guard used + added <= DocumentLimits.documentPixelBudget else { target.session.importError = "The copied layers exceed this project’s \(DocumentLimits.documentBudgetMegapixels)-megapixel limit."; return }
+        guard used + added <= DocumentLimits.documentPixelBudget else {
+            target.session.importError = "The copied layers exceed this project’s %lld-megapixel limit.".localizedFormat(
+                DocumentLimits.documentBudgetMegapixels)
+            return
+        }
         guard target.session.canRetainGIFSources(in: (target.session.document?.layers ?? []) + copied) else {
-            target.session.importError = "The copied GIFs exceed this project’s animation memory limit."
+            target.session.importError = "The copied GIFs exceed this project’s animation memory limit.".localized
             return
         }
         isManaging = true

@@ -92,7 +92,7 @@ brew install --cask robbietilton-compositor
 
 ## Translations
 
-Compositor is English only for now, and translation pull requests aren't being accepted. It's maintained by one person, every new string would need translating from then on, and translations in languages I don't read can't be reviewed. I'll revisit this once the app settles; until then, please don't open localization PRs.
+Simplified Chinese is included in this fork. The English source text stays the stable localization key, and the Chinese catalog only changes displayed text, so upstream updates can be merged without translating or renaming stored data. See [简体中文本地化](docs/localization.md) for the catalog layout, checks and upstream merge workflow.
 
 ## Other platforms
 

@@ -221,11 +221,12 @@ struct NativeResolutionPaintTests {
     @Test func layersPanelSaysHowFarALayerIsScaled() throws {
         let session = try session(scaledTo: 0.05)
         let layer = try #require(session.activeLayer)
-        #expect(layer.sizeLabel == "50 × 50 px · 5%")
+        let px50 = "%lld × %lld px".localizedFormat(50, 50)
+        #expect(layer.sizeLabel == px50 + " · 5%")
         var full = layer
         full.transform.size = CGSize(width: 1000, height: 1000)
-        #expect(full.sizeLabel == "1000 × 1000 px")
+        #expect(full.sizeLabel == "%lld × %lld px".localizedFormat(1000, 1000))
         full.transform.size = CGSize(width: 25, height: 25)
-        #expect(full.sizeLabel == "25 × 25 px · 2.5%")
+        #expect(full.sizeLabel == "%lld × %lld px".localizedFormat(25, 25) + " · 2.5%")
     }
 }

@@ -83,7 +83,7 @@ struct ToolRailStack: View {
             }
             .contentShape(Rectangle())
         }
-        .buttonStyle(.plain).help(tool.label).accessibilityLabel(tool.label)
+        .buttonStyle(.plain).help(tool.label.localized).accessibilityLabel(tool.label.localized)
         .foregroundStyle(.primary)
         .accessibilityAddTraits(session.tool == tool ? .isSelected : [])
     }

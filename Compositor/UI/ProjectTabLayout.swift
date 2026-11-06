@@ -30,6 +30,11 @@ func projectTabOverflowLabel(for hiddenCount: Int) -> String {
     hiddenCount == 1 ? "1 more tab" : "\(hiddenCount) more tabs"
 }
 
+/// 溢出标签的本地化文案。上方的英文函数保持稳定，供布局测试使用。
+func displayProjectTabOverflowLabel(for hiddenCount: Int) -> String {
+    hiddenCount == 1 ? "1 more tab".localized : "%lld more tabs".localizedFormat(hiddenCount)
+}
+
 /// Lays out the strip left to right: everything shows when it all fits. Otherwise tabs are dropped from the
 /// front of `order` — oldest overflow first — until the rest fit alongside an overflow pill at x = 0. The
 /// selected tab is never dropped: if it would be, it takes the first visible slot (right after the pill) and

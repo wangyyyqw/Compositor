@@ -1,0 +1,9 @@
+/* 简体中文的包信息与文件类型名称。 */
+"CFBundleName" = "Compositor";
+"CFBundleDisplayName" = "Compositor";
+"Compositor Project" = "Compositor 项目";
+"Compositor Layer" = "Compositor 图层";
+"Adobe Photoshop Document" = "Adobe Photoshop 文档";
+"Adobe Photoshop Large Document" = "Adobe Photoshop 大型文档";
+"Images" = "图像";
+"Folders" = "文件夹";

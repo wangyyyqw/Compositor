@@ -113,17 +113,17 @@ struct ExportAsSheet: View {
                         isGIFPreviewPlaying.toggle()
                     } label: { Image(systemName: isGIFPreviewPlaying ? "pause.fill" : "play.fill").foregroundStyle(.white) }
                         .disabled(!isReady)
-                        .help(isGIFPreviewPlaying ? "Pause the animation preview." : "Play the animation preview.")
-                        .accessibilityLabel(isGIFPreviewPlaying ? "Pause animation preview" : "Play animation preview")
+                        .help((isGIFPreviewPlaying ? "Pause the animation preview." : "Play the animation preview.").localized)
+                        .accessibilityLabel((isGIFPreviewPlaying ? "Pause animation preview" : "Play animation preview").localized)
                 }
                 Button("Fit") { zoom = nil }.disabled(zoom == nil)
                     .help("Show the whole image (⌘0)")
                 Button { zoomBy(1) } label: { Image(systemName: "plus.magnifyingglass") }
                     .disabled(JPEGPreview.step(from: shownZoom, in: 1) == nil)
-                    .help("Zoom in (⌘+), now \(percent). At 100% each pixel of the export is one pixel of the screen")
+                    .help("Zoom in (⌘+), now %@. At 100%% each pixel of the export is one pixel of the screen".localizedFormat(percent))
                 Button { zoomBy(-1) } label: { Image(systemName: "minus.magnifyingglass") }
                     .disabled(JPEGPreview.step(from: shownZoom, in: -1) == nil)
-                    .help("Zoom out (⌘−), now \(percent)")
+                    .help("Zoom out (⌘−), now %@".localizedFormat(percent))
             }
             .padding(.bottom, -8)
             ZStack {
@@ -144,7 +144,7 @@ struct ExportAsSheet: View {
                     // which takes the chosen one's name.
                     HStack(spacing: 12) {
                         Picker("Format", selection: $format) {
-                            ForEach([ExportFormat.jpeg, .png], id: \.self) { Text($0.rawValue).tag($0) }
+                            ForEach([ExportFormat.jpeg, .png], id: \.self) { Text($0.rawValue.localized).tag($0) }
                         }
                         .pickerStyle(.segmented).labelsHidden().fixedSize()
                         moreFormats
@@ -198,7 +198,7 @@ struct ExportAsSheet: View {
                 if format == .channelPack {
                     ForEach(Array(ChannelPack.Channel.allCases.enumerated()), id: \.offset) { index, channel in
                         GridRow {
-                            Text(channel.rawValue)
+                            Text(channel.rawValue.localized)
                             channelPicker(index, channel: channel)
                         }
                     }
@@ -232,22 +232,21 @@ struct ExportAsSheet: View {
                 if format == .jpeg || format == .pdf || (format == .tiff && cmyk) || (format == .gif && !gifOptions.keepsTransparency) {
                     GridRow {
                         Text("Background")
-                        DialogColorSwatch(title: "Export Background", color: format == .gif ? gifMatte : matte, session: session)
+                        DialogColorSwatch(title: "Export Background".localized, color: format == .gif ? gifMatte : matte, session: session)
                             .help("Color that fills transparent areas")
                     }
                 }
             }
             HStack(spacing: 12) {
-                Text(format == .channelPack ? "Each channel from a layer, read as grayscale · PNG"
-                     : format == .gif ? "Up to 256 colors · sRGB" : format == .exr ? "Brighter than white kept · Transparency kept"
-                     : takesCMYK && cmyk ? "CMYK – \(profile?.name ?? "No profile")"
-                     : format == .png || format == .tiff ? "Transparency kept · sRGB" : "sRGB")
+                Text(formatSummary)
                     .foregroundStyle(.secondary)
                 Spacer()
                 if isReady, let result {
                     Text(ByteCountFormatter.string(fromByteCount: Int64(result.data.count), countStyle: .file)).monospacedDigit()
                 } else if error == nil {
-                    Text(format == .gif ? gifProgress.map { "Encoding frame \(min($0.completed + 1, $0.total)) of \($0.total)…" } ?? "Updating…" : "Updating…")
+                    Text(gifProgress.map {
+                        "Encoding frame %lld of %lld…".localizedFormat(min($0.completed + 1, $0.total), $0.total)
+                    } ?? "Updating…".localized)
                         .foregroundStyle(.secondary).monospacedDigit()
                 }
                 Button("Cancel") { DialogColorSwatch.closePicker(session); finish(nil) }.configuredNativeShortcut(.escape)
@@ -367,17 +366,28 @@ struct ExportAsSheet: View {
         return snapshot.gifExportLayers.contains { (snapshot.animations[$0.id]?.frames.count ?? 0) > 1 }
     }
     private var gifSummary: String {
-        guard !(snapshot?.gifExportLayers ?? []).isEmpty else { return "1 frame · Still canvas" }
+        guard !(snapshot?.gifExportLayers ?? []).isEmpty else { return "1 frame · Still canvas".localized }
         guard let schedule = gifSchedule else { return "—" }
-        let count = "\(schedule.frames.count) \(schedule.frames.count == 1 ? "frame" : "frames")"
+        let count = schedule.frames.count == 1
+            ? "1 frame".localized
+            : "%lld frames".localizedFormat(schedule.frames.count)
         let durations = schedule.durations
-        return "\(count) · \(durations.reduce(0, +).formatted(.number.precision(.fractionLength(0...2)))) s"
+        return "%@ · %@ s".localizedFormat(
+            count, durations.reduce(0, +).formatted(.number.precision(.fractionLength(0...2))))
+    }
+
+    private var formatSummary: String {
+        if format == .channelPack { return "Each channel from a layer, read as grayscale · PNG".localized }
+        if format == .gif { return "Up to 256 colors · sRGB".localized }
+        if format == .exr { return "Brighter than white kept · Transparency kept".localized }
+        if takesCMYK && cmyk { return "CMYK – %@".localizedFormat(profile?.name ?? "No profile".localized) }
+        return (format == .png || format == .tiff ? "Transparency kept · sRGB" : "sRGB").localized
     }
 
     /// RGB or CMYK: one small menu, as few need CMYK. The profile CMYK goes through is View › CMYK › Profile's, named in
     /// the line under the settings.
     private var colorMenu: some View {
-        Menu(cmyk ? "CMYK" : "RGB") {
+        Menu(cmyk ? "CMYK".localized : "RGB".localized) {
             Toggle("RGB", isOn: Binding(get: { !cmyk }, set: { if $0 { cmyk = false } }))
             Toggle("CMYK", isOn: Binding(get: { cmyk }, set: { if $0 { cmyk = true } }))
         }
@@ -388,7 +398,7 @@ struct ExportAsSheet: View {
     private func loadProfile() {
         let panel = NSOpenPanel()
         panel.allowedContentTypes = [UTType(filenameExtension: "icc") ?? .data, UTType(filenameExtension: "icm") ?? .data]
-        panel.message = "Choose a CMYK ICC profile, such as the one your printer gave you"
+        panel.message = "Choose a CMYK ICC profile, such as the one your printer gave you".localized
         guard panel.runModal() == .OK, let url = panel.url else { return }
         do { session.proofProfile = try CMYK.load(url) }
         catch { self.error = error.localizedDescription }
@@ -399,21 +409,23 @@ struct ExportAsSheet: View {
     @ViewBuilder private var moreFormats: some View {
         let others = formats.filter { $0 != .png && $0 != .jpeg }
         let chosen = others.contains(format)
-        let menu = Menu(chosen ? format.rawValue : "More") {
+        let menu = Menu(chosen ? format.rawValue.localized : "More".localized) {
             Picker("More formats", selection: $format) {
-                ForEach(others, id: \.self) { Text($0.rawValue).tag($0) }
+                ForEach(others, id: \.self) { Text($0.rawValue.localized).tag($0) }
             }
             .pickerStyle(.inline).labelsHidden()
         }
         .menuStyle(.button).fixedSize()
-        .help("Other formats: TIFF, PDF and GIF\(others.contains(.exr) ? ", EXR to keep light brighter than white" : ""), and Channel Pack for game textures")
+        .help(others.contains(.exr)
+              ? "Other formats: TIFF, PDF and GIF, EXR to keep light brighter than white, and Channel Pack for game textures".localized
+              : "Other formats: TIFF, PDF and GIF, and Channel Pack for game textures".localized)
         if chosen { menu.buttonStyle(.borderedProminent) } else { menu.buttonStyle(.bordered) }
     }
 
     /// A channel's source: one of the document's layers or groups, top first, or solid black or white.
     private func channelPicker(_ index: Int, channel: ChannelPack.Channel) -> some View {
         let layers = snapshot?.manifest.layers ?? []
-        return Picker(channel.rawValue, selection: $channels[index]) {
+        return Picker(channel.rawValue.localized, selection: $channels[index]) {
             Text("Black").tag(ChannelPack.Source.black)
             Text("White").tag(ChannelPack.Source.white)
             Divider()
@@ -422,7 +434,8 @@ struct ExportAsSheet: View {
             }
         }
         .labelsHidden().frame(width: 260)
-        .help("What fills the \(channel.rawValue.lowercased()) channel: a layer or group read as grayscale, or solid black or white")
+        .help("What fills the %@ channel: a layer or group read as grayscale, or solid black or white"
+            .localizedFormat(channel.rawValue.localized.lowercased()))
     }
 
     private func sizeField(_ value: Int, set: @escaping (Int) -> Void) -> some View {
@@ -445,7 +458,8 @@ struct ExportAsSheet: View {
     private var pageSize: String {
         let dpi = raster.resolution > 0 ? raster.resolution : 72
         let inches = { (pixels: Int) in (Double(pixels) / dpi).formatted(.number.precision(.fractionLength(0...2))) }
-        return "\(inches(width)) × \(inches(height)) in at \(Int(dpi.rounded())) DPI"
+        return "%@ × %@ in at %@ DPI".localizedFormat(
+            inches(width), inches(height), String(Int(dpi.rounded())))
     }
     private var percent: String { "\(Int((shownZoom * 100).rounded()))%" }
     private func zoomBy(_ direction: Int) {

@@ -67,12 +67,12 @@ struct CanvasSizeSheet: View {
     @ViewBuilder private var sheet: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Canvas Size").font(.title2.bold())
-            Text("Current: \(draft.originalWidth) × \(draft.originalHeight) pixels")
-            Text("\(bytes(draft.originalWidth, draft.originalHeight)) uncompressed RGBA canvas")
+            Text("Current: %lld × %lld pixels".localizedFormat(draft.originalWidth, draft.originalHeight))
+            Text("%@ uncompressed RGBA canvas".localizedFormat(bytes(draft.originalWidth, draft.originalHeight)))
                 .font(.callout).foregroundStyle(.secondary)
             Divider()
             Picker("Units", selection: $draft.unit) {
-                ForEach(CanvasUnit.allCases, id: \.self) { Text($0.rawValue).tag($0) }
+                ForEach(CanvasUnit.allCases, id: \.self) { Text($0.rawValue.localized).tag($0) }
             }
             HStack {
                 Text("Width").frame(width: 60, alignment: .leading)
@@ -90,10 +90,12 @@ struct CanvasSizeSheet: View {
                     if locked { draft.set(draft.displayed(widthAxis: true), widthAxis: true) }
                 }
             if draft.valid {
-                Text("New: \(Int(draft.width.rounded())) × \(Int(draft.height.rounded())) pixels · \(bytes(Int(draft.width.rounded()), Int(draft.height.rounded()))) uncompressed")
+                Text("New: %lld × %lld pixels · %@ uncompressed".localizedFormat(
+                    Int(draft.width.rounded()), Int(draft.height.rounded()),
+                    bytes(Int(draft.width.rounded()), Int(draft.height.rounded()))))
                     .font(.callout).foregroundStyle(.secondary)
             } else {
-                Text("Final dimensions must be 1–\(DocumentLimits.maxSide.formatted()) pixels per side.")
+                Text("Final dimensions must be 1–%lld pixels per side.".localizedFormat(DocumentLimits.maxSide))
                     .font(.callout).foregroundStyle(.orange)
             }
             HStack(alignment: .top, spacing: 24) {
@@ -109,26 +111,26 @@ struct CanvasSizeSheet: View {
                                             .frame(width: 25, height: 25)
                                     }
                                     .tint(index == anchor ? .accentColor : .secondary)
-                                    .help(anchorNames[index]).accessibilityLabel(anchorNames[index])
-                                    .accessibilityValue(index == anchor ? "Selected" : "")
+                                    .help(anchorNames[index].localized).accessibilityLabel(anchorNames[index].localized)
+                                    .accessibilityValue(index == anchor ? "Selected".localized : "")
                                 }
                             }
                         }
                     }
                 }
                 VStack(alignment: .leading, spacing: 8) {
-                    Text(anchorNames[anchor]).font(.callout.bold())
+                    Text(anchorNames[anchor].localized).font(.callout.bold())
                     Text("Keeps this point fixed. Artwork is not scaled; cropped content remains outside the canvas.")
                         .font(.callout).foregroundStyle(.secondary)
                 }.padding(.top, 28)
             }
             Picker("Canvas extension", selection: $extensionChoice) {
-                ForEach(["Transparent", "Foreground", "Background", "Black", "White", "Custom"], id: \.self) { Text($0) }
+                ForEach(["Transparent", "Foreground", "Background", "Black", "White", "Custom"], id: \.self) { Text($0.localized) }
             }
             if extensionChoice == "Custom" {
                 HStack(spacing: 8) {
                     Text("Extension color")
-                    DialogColorSwatch(title: "Extension Color", color: $customColor, session: session)
+                    DialogColorSwatch(title: "Extension Color".localized, color: $customColor, session: session)
                         .help("Color for the added canvas")
                 }
             }
