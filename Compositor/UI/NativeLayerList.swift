@@ -1067,18 +1067,20 @@ private final class LayerCell: NSTableCellView, NSTextFieldDelegate {
         linkButton.toolTip = (layer.mask?.isLinked == false ? "Link layer and mask so they move together"
             : "Unlink layer and mask to move or transform them separately").localized
         linkButton.setAccessibilityLabel((layer.mask?.isLinked == false ? "Link mask: %@" : "Unlink mask: %@")
-            .localizedFormat(layer.name))
+            .localizedFormat(layer.name.localizedLayerName))
         thumbnail.toolTip = (editableText ? "Editable text layer" : "Select image pixels").localized
         maskThumbnail.toolTip = "Select layer mask; Option-click to view it alone; Shift-click to enable/disable; Cmd-click to select its black areas (Cmd-Shift adds, Cmd-Option subtracts)".localized
         thumbnail.setAccessibilityLabel("Select %@: %@".localizedFormat(editableText ? "Text".localized : "Image".localized,
-                                                                        layer.name))
+                                                                        layer.name.localizedLayerName))
         thumbnail.setAccessibilityIdentifier("layerThumbnail")
-        maskThumbnail.setAccessibilityLabel("Select mask: %@".localizedFormat(layer.name))
+        maskThumbnail.setAccessibilityLabel("Select mask: %@".localizedFormat(layer.name.localizedLayerName))
         updateTarget()
         layerName = layer.name
         // A reused cell must not carry another row's half-finished rename.
         if renaming, layerID != layer.id { restoreLabel() }
-        if !renaming { nameLabel.stringValue = (layer.maskSourceID == nil ? "" : "↳ ") + layer.name }
+        if !renaming {
+            nameLabel.stringValue = (layer.maskSourceID == nil ? "" : "↳ ") + layer.name.localizedLayerName
+        }
         dimensions.stringValue = layer.liveText != nil ? "Text · Double-click to edit".localized
             : layer.adjustment != nil ? "Adjustment · Double-click to edit".localized
             : layer.isGroup ? "Folder".localized : layer.sizeLabel
@@ -1089,12 +1091,13 @@ private final class LayerCell: NSTableCellView, NSTextFieldDelegate {
         depthTag.isHidden = layer.depthLabel == nil || layer.maskSourceID != nil
         depthTagFits.isActive = !depthTag.isHidden
         if let source = layer.maskSourceID {
-            let sourceName = session.document?.layers.first(where: { $0.id == source })?.name ?? "Missing source".localized
+            let sourceName = session.document?.layers.first(where: { $0.id == source })?.name.localizedLayerName
+                ?? "Missing source".localized
             dimensions.stringValue = "Clipped to %@".localizedFormat(sourceName)
             dimensions.toolTip = "Clipping mask based on %@. Option-click the bottom of its row to release.".localizedFormat(sourceName)
         } else { dimensions.toolTip = nil }
         eye.image = NSImage(systemSymbolName: layer.isVisible ? "eye" : "eye.slash", accessibilityDescription: nil)
-        eye.setAccessibilityLabel((layer.isVisible ? "Hide %@" : "Show %@").localizedFormat(layer.name))
+        eye.setAccessibilityLabel((layer.isVisible ? "Hide %@" : "Show %@").localizedFormat(layer.name.localizedLayerName))
         eye.isEnabled = enabled
         eye.layerID = layer.id
         eye.session = session
@@ -1111,8 +1114,9 @@ private final class LayerCell: NSTableCellView, NSTextFieldDelegate {
         if let layer = session?.document?.layers.first(where: { $0.id == layerID }),
            let sourceID = layer.maskSourceID,
            let source = session?.document?.layers.first(where: { $0.id == sourceID }) {
-            dimensions.stringValue = "Clipped to %@".localizedFormat(source.name)
-            dimensions.toolTip = "Clipping mask based on %@. Option-click the bottom of its row to release.".localizedFormat(source.name)
+            dimensions.stringValue = "Clipped to %@".localizedFormat(source.name.localizedLayerName)
+            dimensions.toolTip = "Clipping mask based on %@. Option-click the bottom of its row to release."
+                .localizedFormat(source.name.localizedLayerName)
         }
         let active = session?.activeLayerID == layerID && session?.selectedLayerIDs.count == 1
         let mask = session?.isMaskSelected == true
@@ -1153,7 +1157,7 @@ private final class LayerCell: NSTableCellView, NSTextFieldDelegate {
         // Show whatever name the layer ended up with, marked as the row shows it.
         if let layer = session.document?.layers.first(where: { $0.id == layerID }) {
             layerName = layer.name
-            nameLabel.stringValue = (layer.maskSourceID == nil ? "" : "↳ ") + layer.name
+            nameLabel.stringValue = (layer.maskSourceID == nil ? "" : "↳ ") + layer.name.localizedLayerName
         }
         // Hand focus back to the list, so tool shortcuts and the arrow keys work straight away.
         var ancestor = superview

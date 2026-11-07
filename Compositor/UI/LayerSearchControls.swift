@@ -68,7 +68,8 @@ extension EditorSession {
         let query = layerSearchText.trimmingCharacters(in: .whitespaces).lowercased()
         let byID = Dictionary(uniqueKeysWithValues: (document?.layers ?? []).map { ($0.id, $0) })
         func matches(_ layer: ImageLayer) -> Bool {
-            (query.isEmpty || layer.name.lowercased().contains(query))
+            (query.isEmpty || layer.name.lowercased().contains(query)
+                || layer.name.localizedLayerName.lowercased().contains(query))
                 && (layerTypeFilter.isEmpty || layerTypeFilter.contains(layer.layerType)
                     || (layerTypeFilter.contains(.selected) && selectedLayerIDs.contains(layer.id)))
         }

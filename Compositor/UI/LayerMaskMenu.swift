@@ -30,7 +30,7 @@ struct MaskAloneBadge: NSViewRepresentable {
     }
     func updateNSView(_ view: CanvasPillView, context: Context) {
         view.title = "Layer Mask".localized
-        view.detail = layer.name
+        view.detail = layer.name.localizedLayerName
     }
 }
 

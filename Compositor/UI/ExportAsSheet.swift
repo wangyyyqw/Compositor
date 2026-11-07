@@ -430,7 +430,7 @@ struct ExportAsSheet: View {
             Text("White").tag(ChannelPack.Source.white)
             Divider()
             ForEach(layers.reversed().filter { $0.adjustment == nil }, id: \.id) { layer in
-                Text(layer.name).tag(ChannelPack.Source.layer(layer.id))
+                Text(layer.name.localizedLayerName).tag(ChannelPack.Source.layer(layer.id))
             }
         }
         .labelsHidden().frame(width: 260)

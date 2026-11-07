@@ -91,7 +91,9 @@ enum CommandPaletteSearch {
     /// order, enabled first.
     static func rank(_ entries: [CommandPaletteEntry], query: String) -> [CommandPaletteEntry] {
         let scored = entries.enumerated().compactMap { index, entry in
-            score(query, in: entry.searchText ?? entry.title).map { (entry, $0, index) }
+            // 显示名和搜索别名（翻译后的菜单项的英文原文）都试一遍，按更高的分排序。
+            let best = [entry.searchText, entry.title].compactMap { $0 }.compactMap { score(query, in: $0) }.max()
+            return best.map { (entry, $0, index) }
         }
         return scored.sorted { a, b in
             if a.0.isEnabled != b.0.isEnabled { return a.0.isEnabled }
@@ -136,6 +138,8 @@ enum CommandPaletteMenu {
             seen[title] = count + 1
             result.append(CommandPaletteEntry(
                 id: count == 0 ? title : "\(title) (\(count + 1))", title: title,
+                // 翻译后的菜单用英文原文也可以搜到。
+                searchText: LocalizationAliases.englishPath(for: title),
                 shortcut: shortcut(of: item), isEnabled: item.isEnabled, isOn: item.state == .on,
                 // Found again by its path when run, so a menu SwiftUI has rebuilt since the palette opened still works.
                 perform: { [weak root] in

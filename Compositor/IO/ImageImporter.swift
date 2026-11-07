@@ -141,7 +141,7 @@ actor ImageImporter {
             context.drawPDFPage(page)
             guard let image = context.makeImage() else { throw ImageImportError.unreadable }
             return ImportedImage(image: image, thumbnail: try PixelAdjust.thumbnail(of: image),
-                                 name: document.numberOfPages == 1 ? name : "Page %lld".localizedFormat(number))
+                                 name: document.numberOfPages == 1 ? name : "Page \(number)")
         }
     }
 

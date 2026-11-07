@@ -1516,3 +1516,12 @@
 "“%@” is a folder, which has no pixels of its own. Paint on a layer inside it, or on the folder’s mask." = "“%@”是文件夹，本身没有像素。请在其内部的图层或文件夹蒙版上绘制。";
 "“%@” is an adjustment layer, with no pixels to paint. Paint on its mask instead." = "“%@”是调整图层，没有可绘制的像素。请在它的蒙版上绘制。";
 "“%@” is hidden, or inside a hidden folder. Show it to paint on it." = "“%@”已隐藏，或位于隐藏的文件夹中。请先显示它再绘制。";
+
+/* 自动生成的图层名称（存储值保持英文，仅显示时翻译）。 */
+"Floating Selection" = "浮动选区";
+"Pasted Image" = "粘贴的图像";
+"Layer %lld" = "图层 %lld";
+"Folder %lld" = "文件夹 %lld";
+"Rectangle %lld" = "矩形 %lld";
+"Ellipse %lld" = "椭圆 %lld";
+"Line %lld" = "直线 %lld";
