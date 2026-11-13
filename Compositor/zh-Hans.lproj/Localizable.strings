@@ -325,6 +325,7 @@
 "Cropped to the canvas so the file fits in memory. Pixels outside the canvas weren't imported." = "已裁剪到画布范围内，以便文件能装入内存。画布外的像素未被导入。";
 "Crops empty edges after the transform and fits the result back into the frame." = "变换后裁去空白边缘，并将结果适配回画框。";
 "Current default. The calibration sliders below apply at full strength." = "当前默认。下方校准滑块以完整强度应用。";
+"Current color" = "当前颜色";
 "Current: %@ × %@ pixels" = "当前：%@ × %@ 像素";
 "Current: %lld × %lld pixels" = "当前：%lld × %lld 像素";
 "Curve" = "曲线";
@@ -477,8 +478,6 @@
 "Export As" = "导出为";
 "Export As…" = "导出为…";
 "Export Background" = "导出背景";
-"Export JPEG" = "导出 JPEG";
-"Export JPEG…" = "导出 JPEG…";
 "Export Layer as PNG" = "将图层导出为 PNG";
 "Export Layer as PNG…" = "将图层导出为 PNG…";
 "Export Layers as PNGs…" = "将图层导出为多个 PNG…";
@@ -1251,6 +1250,7 @@
 "The blur where the line starts" = "线条起点处的模糊";
 "The brush trails the pointer on a string this long, so a shaky hand still draws a smooth line" = "画笔以该长度的牵引跟随指针，使手抖时仍能画出平滑线条";
 "The canvas could not be rendered. Try a smaller canvas." = "无法渲染画布。请尝试更小的画布。";
+"The color before: click to go back to it" = "之前的颜色：单击即可恢复";
 "The characters to draw with, in any order: each spot gets the one whose ink best matches its tone" = "用于绘制的字符，顺序不限：每个位置使用墨色最接近其色调的字符";
 "The copied GIFs exceed this project’s animation memory limit." = "复制的 GIF 超出了此项目的动画内存限制。";
 "The font “%@” isn’t installed, so the text was drawn with the system font." = "未安装字体“%@”，因此文字使用了系统字体绘制。";
