@@ -96,6 +96,7 @@ struct FloatingPanelTests {
         controller.show(title: "Camera Raw Filter", content: Text("Camera Raw").frame(maxWidth: .infinity, maxHeight: .infinity), placement: .dockedToMainWindowRight)
         settle()
         #expect(panel.isVisible)
+        #expect(panel.title == "Camera Raw Filter".localized)
         let document = try #require(NSApp.windows.first { $0 !== panel && $0.isVisible && !($0 is NSPanel) })
         #expect(abs(panel.frame.maxX - document.frame.maxX) < 2)
         controller.close()
