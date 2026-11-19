@@ -1525,3 +1525,18 @@
 "Rectangle %lld" = "矩形 %lld";
 "Ellipse %lld" = "椭圆 %lld";
 "Line %lld" = "直线 %lld";
+
+/* 上游 v1.6.7–v1.6.13 新增文案。 */
+"Adjustment layers left out: %@" = "未导出的调整图层：%@";
+"Changes" = "变更";
+"Color Picker (Fill Color)" = "颜色选择器（填充颜色）";
+"Color Picker (Stroke Color)" = "颜色选择器（描边颜色）";
+"Effects drawn into the pixels: %@" = "图层效果已绘制到像素中：%@";
+"Layers, folders and masks kept · sRGB" = "保留图层、文件夹和蒙版 · sRGB";
+"Other formats: TIFF, PDF and GIF, Channel Pack for game textures, and PSD to keep the layers for Photoshop" = "其他格式：TIFF、PDF、GIF 和用于游戏纹理的 Channel Pack；PSD 可保留 Photoshop 图层";
+"Other formats: TIFF, PDF and GIF, EXR to keep light brighter than white, Channel Pack for game textures, and PSD to keep the layers for Photoshop" = "其他格式：TIFF、PDF、GIF、可保留高于白色亮度的 EXR 和用于游戏纹理的 Channel Pack；PSD 可保留 Photoshop 图层";
+"Smooth edges; turn off for hard pixel edges, like a pencil" = "平滑边缘；关闭后边缘呈硬像素效果，类似铅笔";
+"Stroke color" = "描边颜色";
+"Stroke drawn inside the shape, in pixels. 0 draws none" = "描边绘制在形状内部，单位为像素；0 表示不绘制";
+"Text drawn as pixels: %@" = "文字已栅格化为像素：%@";
+"%@ and %lld more" = "%@ 等另外 %lld 个";
