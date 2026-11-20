@@ -75,7 +75,7 @@ struct NewCanvasSheet: View {
     private var resolutionHelp: String {
         let size = unit != .pixels ? pixelWidth.flatMap { w in
             pixelHeight.map { h in
-                " · %@ DPI: %lld × %lld pixels".localizedFormat(Int(resolution), w, h)
+                " · %lld DPI: %lld × %lld pixels".localizedFormat(Int(resolution), w, h)
             }
         } : nil
         return "Resolution: 72 for screens, 300 for print. Click to switch.".localized + (size ?? "")

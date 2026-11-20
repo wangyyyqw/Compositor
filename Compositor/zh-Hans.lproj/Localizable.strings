@@ -1540,3 +1540,26 @@
 "Stroke drawn inside the shape, in pixels. 0 draws none" = "描边绘制在形状内部，单位为像素；0 表示不绘制";
 "Text drawn as pixels: %@" = "文字已栅格化为像素：%@";
 "%@ and %lld more" = "%@ 等另外 %lld 个";
+
+/* 动态控件、提示和撤销操作（内部名称保持英文）。 */
+"Fill" = "填充";
+"Shape Style" = "形状样式";
+"Color of the selected line" = "所选直线的颜色";
+"Color of the next line" = "下一条直线的颜色";
+"Fill color of the selected shape" = "所选形状的填充颜色";
+"Dashes of the selected line; they grow with its width" = "所选直线的虚线样式；线段随线宽增大";
+"How this line's ends are finished" = "此直线的端点样式";
+"Round this rectangle's corners by this many pixels; 0 keeps them square" = "按此像素值设置所选矩形的圆角；0 表示直角";
+"Add %@" = "添加%@";
+"Cancel %@" = "取消%@";
+"Edit %@" = "编辑%@";
+"Copy %@" = "复制%@";
+"Remove %@" = "移除%@";
+"Distribute %@" = "分布%@";
+"Generic CMYK Profile" = "通用 CMYK 配置文件";
+"Embedded CMYK Profile" = "嵌入的 CMYK 配置文件";
+"%@ ms" = "%@ 毫秒";
+"%@ms" = "%@毫秒";
+" · %lld DPI: %lld × %lld pixels" = " · %lld DPI：%lld × %lld 像素";
+"Selection %lld × %lld px" = "选区 %lld × %lld 像素";
+"Selection %lld × %lld px · Feather %lld px" = "选区 %lld × %lld 像素 · 羽化 %lld 像素";

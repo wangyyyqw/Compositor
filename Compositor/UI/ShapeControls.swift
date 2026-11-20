@@ -27,16 +27,16 @@ struct ShapeControls: View {
             .pickerStyle(.segmented).labelsHidden().fixedSize()
             .help("Shift-U (or Tab) steps through Rectangle, Ellipse and Line")
             HStack(spacing: 6) {
-                Text(showsStroke ? "Fill" : "Color")
+                Text((showsStroke ? "Fill" : "Color").localized)
                 Button { session.openShapeFillPicker() } label: {
                     ColorSwatch(color: Color(nsColor: session.displayedShapeFill.nsColor))
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel("Fill color")
-                .help(editsLine ? "Color of the selected line"
+                .help((editsLine ? "Color of the selected line"
                       : session.shapeKind == .line ? "Color of the next line"
                       : editsSelection ? "Fill color of the selected shape"
-                      : "Shapes fill with the foreground color; click to change it")
+                      : "Shapes fill with the foreground color; click to change it").localized)
             }
             if showsStroke {
                 HStack(spacing: 6) {
@@ -84,8 +84,8 @@ struct ShapeControls: View {
                     }
                     .pickerStyle(.menu).labelsHidden().fixedSize()
                 }
-                .help(editsLine ? "Dashes of the selected line; they grow with its width"
-                      : "Solid, dashed or dotted; dashes grow with the line's width")
+                .help((editsLine ? "Dashes of the selected line; they grow with its width"
+                      : "Solid, dashed or dotted; dashes grow with the line's width").localized)
                 HStack(spacing: 6) {
                     Text("Cap")
                     Picker("Cap", selection: Binding(get: { session.displayedLineCap },
@@ -96,8 +96,8 @@ struct ShapeControls: View {
                     }
                     .pickerStyle(.menu).labelsHidden().fixedSize()
                 }
-                .help(editsLine ? "How this line's ends are finished"
-                      : "How the line's ends, and each of its dashes and dots, are finished")
+                .help((editsLine ? "How this line's ends are finished"
+                      : "How the line's ends, and each of its dashes and dots, are finished").localized)
             }
             if showsRadius {
                 HStack(spacing: 6) {
@@ -112,9 +112,9 @@ struct ShapeControls: View {
                         .arrowSteps(value: { session.displayedCornerRadius },
                                     change: { session.setDisplayedCornerRadius($0) })
                 }
-                .help(editsSelection
+                .help((editsSelection
                       ? "Round this rectangle's corners by this many pixels; 0 keeps them square"
-                      : "Round the rectangle's corners by this many pixels; 0 keeps them square")
+                      : "Round the rectangle's corners by this many pixels; 0 keeps them square").localized)
                 Toggle("Smooth Corners", isOn: Binding(get: { session.displayedShapeSmoothing },
                                                       set: { session.setDisplayedShapeSmoothing($0) }))
                     .toggleStyle(.checkbox)

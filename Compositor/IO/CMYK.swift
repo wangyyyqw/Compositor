@@ -8,6 +8,14 @@ nonisolated struct CMYKProfile: Hashable, Identifiable, @unchecked Sendable {
     let data: Data
     let space: CGColorSpace
     var id: String { name }
+    /// 仅翻译系统通用名和应用生成的回退名，配置文件的原始名称用于存储和匹配。
+    @MainActor var displayName: String {
+        switch name {
+        case "Generic CMYK Profile": "Generic CMYK Profile".localized
+        case "Embedded CMYK Profile": "Embedded CMYK Profile".localized
+        default: name
+        }
+    }
     static func == (a: CMYKProfile, b: CMYKProfile) -> Bool { a.name == b.name && a.data == b.data }
     func hash(into hasher: inout Hasher) { hasher.combine(name) }
 

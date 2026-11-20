@@ -397,7 +397,7 @@ struct ExportAsSheet: View {
         if format == .channelPack { return "Each channel from a layer, read as grayscale · PNG".localized }
         if format == .gif { return "Up to 256 colors · sRGB".localized }
         if format == .exr { return "Brighter than white kept · Transparency kept".localized }
-        if takesCMYK && cmyk { return "CMYK – %@".localizedFormat(profile?.name ?? "No profile".localized) }
+        if takesCMYK && cmyk { return "CMYK – %@".localizedFormat(profile?.displayName ?? "No profile".localized) }
         return (format == .png || format == .tiff ? "Transparency kept · sRGB" : "sRGB").localized
     }
 

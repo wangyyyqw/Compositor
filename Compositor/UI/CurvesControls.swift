@@ -56,7 +56,7 @@ struct CurvesControls: View {
             Text("Click to add a point. Drag to adjust.").font(.caption).foregroundStyle(.secondary)
             HStack {
                 if let selected, points.indices.contains(selected) {
-                    Text("Input %@ · Output %@".localizedFormat(Int(points[selected].x), Int(points[selected].y)))
+                    Text("Input %lld · Output %lld".localizedFormat(Int(points[selected].x), Int(points[selected].y)))
                         .monospacedDigit()
                 }
                 Spacer()

@@ -8,6 +8,18 @@ struct CMYKTests {
         try #require(CMYK.installed().first { $0.name == "Generic CMYK Profile" }, "macOS ships Generic CMYK")
     }
 
+    @Test @MainActor func profileNamesTranslateOnlyForDisplay() throws {
+        let generic = try profile()
+        #expect(generic.displayName == "Generic CMYK Profile".localized)
+        #expect(generic.name == "Generic CMYK Profile")
+        #expect(generic.id == "Generic CMYK Profile")
+        let embedded = try #require(CMYKProfile(name: "Embedded CMYK Profile", data: generic.data))
+        #expect(embedded.displayName == "Embedded CMYK Profile".localized)
+        // 用户命名即使恰好与界面词条相同，也不翻译。
+        let custom = try #require(CMYKProfile(name: "Color", data: generic.data))
+        #expect(custom.displayName == "Color")
+    }
+
     /// A picture half saturated blue (beyond what ink can print) and half mid gray, as an export raster.
     private func raster() throws -> ExportRaster {
         let context = try BrushRaster.context(width: 40, height: 20, mask: false)

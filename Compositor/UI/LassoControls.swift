@@ -261,7 +261,7 @@ struct SelectionAmountSheet: View {
                     .multilineTextAlignment(.trailing).focused($focused)
                     .unitSuffix("px")
             }
-            Text("Enter a whole number from 1 to %@ px.".localizedFormat(maximum))
+            Text("Enter a whole number from 1 to %lld px.".localizedFormat(maximum))
                 .font(.callout).foregroundStyle(.secondary)
                 .opacity(amount == nil ? 1 : 0)
             Divider()

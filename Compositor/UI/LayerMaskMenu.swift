@@ -52,7 +52,7 @@ struct ProofBadge: NSViewRepresentable {
     }
     func updateNSView(_ view: CanvasPillView, context: Context) {
         view.title = (gamut ? "CMYK Gamut Warning" : "CMYK Proof").localized
-        view.detail = session.proofProfile?.name ?? ""
+        view.detail = session.proofProfile?.displayName ?? ""
     }
 }
 

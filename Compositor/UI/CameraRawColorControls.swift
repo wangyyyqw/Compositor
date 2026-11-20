@@ -39,7 +39,7 @@ struct CameraRawCurveControls: View {
                 amount("Shadows", \.shadows, "Lifts or lowers the darkest tones.")
             } else {
                 if let point = selectedPoint {
-                    Text("In %@   Out %@".localizedFormat(Int((point.x * 255).rounded()), Int((point.y * 255).rounded())))
+                    Text("In %lld   Out %lld".localizedFormat(Int((point.x * 255).rounded()), Int((point.y * 255).rounded())))
                         .font(.caption.monospacedDigit())
                         .foregroundStyle(.secondary)
                         .help("Input and output of the selected curve point.")

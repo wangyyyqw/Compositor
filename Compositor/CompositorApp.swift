@@ -170,7 +170,7 @@ struct CompositorApp: App {
                             Menu("Profile") {
                                 let current = session.proofProfile ?? CMYK.chosen
                                 ForEach(CMYK.installed()) { profile in
-                                    Toggle(profile.name, isOn: Binding(get: { current?.name == profile.name },
+                                    Toggle(profile.displayName, isOn: Binding(get: { current?.name == profile.name },
                                                                        set: { if $0 { session.proofProfile = profile } }))
                                 }
                                 Divider()

@@ -353,8 +353,8 @@ struct ContentView: View {
                         .accessibilityIdentifier("shapeDimensions")
                 } else if let size = session.selectionSize {
                     Text(session.selectionFeather.map {
-                        "Selection %@ × %@ px · Feather %@ px".localizedFormat(size.width, size.height, $0)
-                    } ?? "Selection %@ × %@ px".localizedFormat(size.width, size.height))
+                        "Selection %lld × %lld px · Feather %lld px".localizedFormat(size.width, size.height, $0)
+                    } ?? "Selection %lld × %lld px".localizedFormat(size.width, size.height))
                         .accessibilityIdentifier("selectionDimensions")
                 }
                 Text("sRGB · Transparent".localized)

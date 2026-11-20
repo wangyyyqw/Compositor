@@ -64,6 +64,13 @@ extension String {
         let prefixes = [
             ("New ", " Adjustment", "New %@ Adjustment"),
             ("Edit ", " Adjustment", "Edit %@ Adjustment"),
+            ("Add ", "", "Add %@"),
+            ("Cancel ", "", "Cancel %@"),
+            ("Edit ", "", "Edit %@"),
+            ("Copy ", "", "Copy %@"),
+            ("Remove ", "", "Remove %@"),
+            ("Align ", "", "Align %@"),
+            ("Distribute ", "", "Distribute %@"),
             ("Delete ", "", "Delete %@"),
             ("Duplicate ", "", "Duplicate %@"),
             ("Transform ", "", "Transform %@"),
