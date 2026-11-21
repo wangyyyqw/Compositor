@@ -1,15 +1,15 @@
 # Compositor
 
-Adobe Photoshop costs too much and tools like GIMP don’t feel familiar enough for me to stay in flow. That’s why I built Compositor.
+Adobe Photoshop 价格太高，而 GIMP 等工具又不够熟悉，难以让我保持流畅的工作状态。因此我开发了 Compositor。
 
-The goal was to create a full-featured image editor that is completely free and open source. I used to use Photoshop for compositing and post-processing, so Compositor is built around that workflow - with the tools needed to create a pixel-perfect final image.
+我的目标是打造一款功能齐全、完全免费且开源的图像编辑器。我过去常用 Photoshop 进行合成与后期处理，因此 Compositor 围绕这套工作流程构建，并提供制作像素级精准成品所需的工具。
 
-Because it’s open source, you can download the Xcode project and add, remove, or modify any feature to fit your workflow.
+由于它是开源软件，你可以下载 Xcode 项目，按自己的工作流程添加、移除或修改功能。
 
-## Installation
+## 安装
 
-### Download
-Get Compositor from [robbietilton.com/compositor](https://robbietilton.com/compositor), or download the latest release directly from [GitHub Releases](https://github.com/robbietilton/Compositor/releases/latest).
+### 下载
+从 [robbietilton.com/compositor](https://robbietilton.com/compositor) 获取 Compositor，或直接从 [GitHub Releases](https://github.com/robbietilton/Compositor/releases/latest) 下载最新版本。
 
 ### Homebrew
 
@@ -17,111 +17,109 @@ Get Compositor from [robbietilton.com/compositor](https://robbietilton.com/compo
 brew install --cask robbietilton-compositor
 ```
 
-## Features
+## 功能
 
-### Layers
-- Layers and folders, with opacity and Photoshop's full set of blend modes in its order — a folder's opacity dims everything inside it
-- Layer masks: paint, fill, invert, blur and feather them anywhere on the canvas, past the layer's own pixels; link or unlink them to transform a mask on its own
-- Clipping masks and folder masks
-- Adjustment layers: Hue/Saturation, Levels, Curves, Exposure, Gradient Map, Grain, Black & White, Color Balance, Invert, and filter layers: Gaussian Blur, Motion Blur, Progressive Blur, Sharpen, Reduce Noise, Noise, Vignette, Bloom / Glow, RGB Split, Lens Effects and Tonal Contrast
-- Layer effects: Stroke, Drop Shadow, Color Overlay, Inner Shadow, Outer Glow and Inner Glow, rendered on the GPU and editable at any time
-- Merge Down, Merge Layers and Merge Group (⌘E)
-- Duplicate, rename inline, reorder and nest by drag and drop; Option-drag to duplicate; a right-click menu in the Layers panel
-- Copy and paste whole layers and folders (⌘C/⌘V with no selection), within a project or between projects, or drag them between projects
+### 图层
+- 支持图层和文件夹，可调节不透明度，并提供 Photoshop 全套混合模式及相同排列顺序；文件夹的不透明度会影响其中所有内容
+- 图层蒙版：可在画布任意位置绘制、填充、反相、模糊和羽化，即使超出图层自身像素范围也可以；还可链接或取消链接蒙版，以便单独变换蒙版
+- 剪贴蒙版和文件夹蒙版
+- 调整图层：色相/饱和度、色阶、曲线、曝光、渐变映射、颗粒、黑白、色彩平衡、反相；滤镜图层：高斯模糊、动态模糊、渐进模糊、锐化、降噪、噪点、暗角、泛光/光晕、RGB 分离、镜头效果和色调对比
+- 图层效果：描边、投影、颜色叠加、内阴影、外发光和内发光；由 GPU 渲染，随时可以编辑
+- 向下合并、合并图层和合并组（⌘E）
+- 可复制、重命名、拖放调整顺序和嵌套；按住 Option 并拖动即可复制；图层面板提供右键菜单
+- 可复制和粘贴整个图层或文件夹（未选中内容时按 ⌘C/⌘V），支持在项目内或项目间操作，也可以在项目间拖动
 
-### Transform
-- Non-destructive move, scale, rotate and flip — images keep their full resolution however small you make them
-- Free distort (⌘-drag a handle), with Shift to lock to an axis
-- Transform several layers, or a whole folder, together
-- Snapping to canvas and layer edges and centers, with guides
-- Distances (View › Show › Distances): pixel gaps to the canvas edges and nearby layers while moving a layer, and to the layer under the pointer with ⌘ held
-- Exact values for position, size, scale and angle, stepped with the arrow keys
-- Flip Layer and Flip Canvas, horizontal and vertical
-- Align and Distribute layers to each other, the selection or the canvas, from the Move tool's bar or the Layer menu
+### 变换
+- 无损移动、缩放、旋转和翻转；无论缩小多少，图像都会保留完整分辨率
+- 自由扭曲（按住 ⌘ 拖动控制点），按住 Shift 可锁定轴向
+- 可同时变换多个图层或整个文件夹
+- 可对齐画布边缘、图层边缘和中心，并使用参考线吸附
+- 距离（视图 › 显示 › 距离）：移动图层时显示画布边缘和相邻图层之间的像素间距；按住 ⌘ 时显示指针下方图层之间的距离
+- 可精确设置位置、尺寸、缩放比例和角度，并用方向键逐步调整
+- 可水平或垂直翻转图层和画布
+- 可通过移动工具栏或“图层”菜单，将图层相互对齐，或与选区、画布对齐和分布
 
-### Selections
-- Rectangle and Ellipse Marquee, Freehand and Polygonal Lasso, and the Magic tool — Wand selects by color, Object traces whatever you click (Tab switches)
-- Select Subject, and Expand, Contract and Feather on any selection
-- Add to and subtract from selections, move the outline, or move and duplicate the pixels inside
-- Load a layer's pixels or a mask as a selection
-- Content-Aware Fill, which can also extend an image past its edges
+### 选区
+- 矩形和椭圆选框、自由和多边形套索，以及魔棒工具；魔棒可按颜色选取，对象模式会描出点击对象的轮廓（按 Tab 切换）
+- 主体选择，以及对任意选区进行扩展、收缩和羽化
+- 可向选区添加或减去内容、移动选区边缘，或移动和复制选区内的像素
+- 可将图层像素或蒙版载入为选区
+- 内容识别填充，也可用于向图像边缘以外扩展画面
 
-### Painting and retouching
-- Brush with size, hardness, opacity and smoothing, in Paint or Erase mode (B and E), and Shift for straight lines
-- Pen pressure for the Brush's size and opacity, on a graphics tablet
-- Spot Healing Brush (content-aware)
-- Clone Stamp, aligned or not, sampling one layer or all of them
-- Blur tool, on pixels or masks
-- Gradient tool and Shape tool (rectangles, rounded rectangles, ellipses and lines), which stay editable rather than being rasterized
-- Type tool (T): inline multiline editing in draggable, resizable paragraph boxes; font, size, color, alignment and spacing in the tool header; transform text and use it as a clipping mask
-- Eyedropper and a full color picker
+### 绘画与修饰
+- 画笔可调节大小、硬度、不透明度和平滑度，并支持绘画或擦除模式（B 和 E）；按住 Shift 可绘制直线
+- 绘图板支持通过笔压控制画笔大小和不透明度
+- 污点修复画笔（内容识别）
+- 仿制图章，可选择对齐或非对齐，并从单个图层或所有图层取样
+- 可在像素或蒙版上使用模糊工具
+- 渐变工具和形状工具（矩形、圆角矩形、椭圆和直线）；形状会保持可编辑，不会栅格化
+- 文字工具（T）：可直接编辑多行文字，并放入可拖动、可调整大小的段落框；可在工具栏中设置字体、字号、颜色、对齐和间距；也可变换文字，或将文字用作剪贴蒙版
+- 吸管工具和完整的颜色选择器
 
-### Adjustments and filters
-- Camera Raw filter: light, color, curves, color mixer, color grading, detail, optics and geometry, in a panel beside the canvas; each section resets to its defaults from its header
-- Levels (with Auto), Curves, Hue/Saturation, Exposure, Gradient Map, Grain, Black & White, Color Balance and Invert
-- Gaussian Blur and Motion Blur that spread past a layer's edges
-- Sharpen, Reduce Noise, Add Noise, Vignette, Bloom / Glow, Dither, Scanlines, RGB Split, Lens Effects (anamorphic flare, starburst, mist, prism and bokeh in round, hexagon, oval or cat's-eye shapes), Tonal Contrast, Volumetric Light (fog that thickens with distance around the subject, lit by a light you place, with the photo's own lights glowing into it and optional beams), Rim Light (up to three colored lights behind the subject, with glow that wraps it into the light), Lens Correction and Remove Background
-- Live previews, limited to the selection when there is one
-- Last Filter (⌃⌘F) runs the last filter again with the same settings
+### 调整与滤镜
+- Camera Raw 滤镜：在画布旁的面板中调整光线、颜色、曲线、颜色混合、颜色分级、细节、光学和几何；每个分区都可通过标题恢复默认值
+- 色阶（含自动调整）、曲线、色相/饱和度、曝光、渐变映射、颗粒、黑白、色彩平衡和反相
+- 高斯模糊和动态模糊会延伸到图层边缘之外
+- 锐化、降噪、添加杂色、暗角、泛光/光晕、抖动、扫描线、RGB 分离、镜头效果（变形耀斑、星芒、雾化、棱镜和散景；散景支持圆形、六边形、椭圆和猫眼形状）、色调对比、体积光（随距离围绕主体逐渐变浓的雾，可放置光源，照片中的灯光也会在雾中发亮，并可选择添加光束）、轮廓光（最多可在主体后方设置三盏彩色光源，光晕会环绕主体延伸），镜头校正和移除背景
+- 支持实时预览；存在选区时，预览仅应用于选区
+- 上次使用的滤镜（⌃⌘F）可用相同设置再次运行
 
-### Canvas and files
-- Multiple projects in tabs
-- Search Commands (⌘F): find every menu command and tool by name, as in Raycast or Obsidian, and run it with Return
-- Toggle Fullscreen (F): the canvas alone on black over the whole screen, with every panel put away; F or Esc brings them back
-- Rulers (⌘R), guides dragged from them, a layout grid with adjustable spacing and subdivisions, and Snap To for guides, grid, layers and document bounds
-- Crop with snapping, ratios including 3:4 and 9:16, and Option for symmetric cropping; with a selection, the crop starts at it
-- Canvas Size, Image Size and Trim
-- The tool bar moves into two columns when the window is too short for one
-- A Navigator minimap in the canvas's corner from 300% zoom: the whole document in small with a box around the view; click or drag to move there (View › Navigator)
-- Sharp high-quality downsampling when zoomed out, and a pixel grid when zoomed in
-- Import JPEG, PNG, HEIC, TIFF, WebP, SVG, PDF (every page its own layer, at 300 DPI or fitted to the canvas), animated GIF (one layer whose frames show in a strip under the canvas, to play, paint on, duplicate, delete and retime), camera RAW (with a develop step first) and Photoshop PSD and PSB (8-bit RGB; not CMYK). Each Photoshop artboard opens in a tab of its own; folders, masks, blend modes, fill rectangles/ellipses, and simple horizontal text stay editable; other vectors and vertical text become pixels. A conversion report is shown before anything is applied.
-- Large documents: the memory budget scales with your Mac, and a Photoshop file too big to open has its layers cropped to the canvas instead
-- Export PNG (⇧⌘E) and Export As (⇧⌥⌘S, or ⇧⌥⌘W) for PNG, JPEG, a one-page PDF at the print size or, with a GIF layer, an animated GIF, scaled if you like, with a live preview, JPEG quality and file size; Channel Pack in Export As packs layers into a PNG's red, green, blue and alpha for game textures, and RGB Split's Split to Layers turns a layer back into those four; right-click layers in the Layers panel to export each as its own PNG, trimmed to its pixels; Copy Merged
-- Keep working while a project saves
-- Photoshop-style keyboard shortcuts throughout, remappable in Edit > Keyboard Shortcuts
-- Drag a number's label to scrub its value, as in Photoshop
-- Automatic updates, signed and notarized
+### 画布与文件
+- 可在标签页中打开多个项目
+- 搜索命令（⌘F）：按名称查找所有菜单命令和工具，类似 Raycast 或 Obsidian，按 Return 即可执行
+- 切换全屏（F）：只在整个黑色屏幕上显示画布，并隐藏所有面板；按 F 或 Esc 可恢复面板
+- 标尺（⌘R）、从标尺拖出的参考线、可调整间距和细分数的网格，以及适用于参考线、网格、图层和文档边界的吸附功能
+- 支持吸附裁剪、3:4 和 9:16 等比例，并可按住 Option 对称裁剪；存在选区时，裁剪区域从选区开始
+- 画布大小、图像大小和修边
+- 窗口高度不足以显示单列工具栏时，工具栏会切换为两列
+- 画布角落提供导航器缩略图（缩放达到 300% 时显示）：可查看完整文档和当前视图范围，点击或拖动即可导航（视图 › 导航器）
+- 缩小时使用清晰的高质量降采样，放大时显示像素网格
+- 支持导入 JPEG、PNG、HEIC、TIFF、WebP、SVG、PDF（每页作为独立图层，可按 300 DPI 或适应画布导入）、动态 GIF（作为单个图层导入，帧以条带显示在画布下方，可播放、绘制、复制、删除和调整帧时长）、相机 RAW（先经过显影步骤）以及 Photoshop PSD 和 PSB（8 位 RGB，不支持 CMYK）。每个 Photoshop 画板会单独在一个标签页中打开；文件夹、蒙版、混合模式、填充矩形/椭圆和简单的水平文字会保持可编辑，其他矢量图形和竖排文字会转换为像素。应用更改前会显示转换报告
+- 支持大型文档：内存预算会根据 Mac 的配置调整；超出打开限制的 Photoshop 文件会将图层裁剪至画布大小
+- 可导出 PNG（⇧⌘E），也可使用“导出为”（⇧⌥⌘S 或 ⇧⌥⌘W）导出 PNG、JPEG、按打印尺寸生成的单页 PDF，或在包含 GIF 图层时导出动态 GIF；支持调整缩放并实时预览 JPEG 画质和文件大小。“导出为”中的 Channel Pack 可将图层打包到 PNG 的红、绿、蓝和 Alpha 通道，用于游戏纹理；RGB 分离滤镜中的“分离到图层”可将图层还原为这四个通道；在图层面板中右键单击图层可单独导出裁至像素范围的 PNG；还支持“复制合并”
+- 项目保存期间可以继续工作
+- 全局采用 Photoshop 风格的键盘快捷键，可在“编辑”>“键盘快捷键”中重新映射
+- 拖动数值标签即可调整数值，操作方式与 Photoshop 相同
+- 支持自动更新；应用已签名并经过公证
 
-### Works with AI agents
-- AI agents and scripts can build and edit projects directly: a `.comp` is a folder of PNG layers and a manifest, and an open project updates live as it's written. See [Writing Compositor projects](docs/writing-comp-files.md)
+### 支持 AI 智能体
+- AI 智能体和脚本可以直接创建和编辑项目：`.comp` 是由 PNG 图层和清单文件组成的文件夹；项目打开时，写入的更改会实时更新。详见[编写 Compositor 项目](docs/writing-comp-files.md)
 
-## Requirements
+## 系统要求
 
-- macOS 26.0 or later on a Mac with Apple silicon
-- Xcode 26 or later (to build from source)
+- 配备 Apple 芯片的 Mac，运行 macOS 26.0 或更高版本
+- 从源代码构建需要 Xcode 26 或更高版本
 
-## Translations
+## 翻译
 
-Simplified Chinese is included in this fork. The English source text stays the stable localization key, and the Chinese catalog only changes displayed text, so upstream updates can be merged without translating or renaming stored data. See [简体中文本地化](docs/localization.md) for the catalog layout, checks and upstream merge workflow.
+本分支内置简体中文。英文源文案保持为稳定的本地化键，中文目录只改变界面显示文本，因此合并上游更新时无需翻译或重命名已保存的数据。目录结构、检查方式和上游合并流程详见[简体中文本地化](docs/localization.md)。
 
-## Other platforms
+## 其他平台
 
-Compositor is macOS only. These unofficial ports are made by others, not reviewed or supported by me, so please report issues to them:
+Compositor 仅支持 macOS。以下非官方移植由其他开发者制作，未经我审核或支持；遇到问题请联系相应项目维护者：
 
-- [CompositorWindows](https://github.com/Cengokill/CompositorWindows) by [@Cengokill](https://github.com/Cengokill): Windows
-- [Composa](https://github.com/dvdstelt/Composa) by [@dvdstelt](https://github.com/dvdstelt): Windows and Linux
-- [CompositorLX](https://github.com/ClaudiuJitea/compositorLX) by [@ClaudiuJitea](https://github.com/ClaudiuJitea): Linux
+- [CompositorWindows](https://github.com/Cengokill/CompositorWindows)，由 [@Cengokill](https://github.com/Cengokill) 开发：Windows
+- [Composa](https://github.com/dvdstelt/Composa)，由 [@dvdstelt](https://github.com/dvdstelt) 开发：Windows 和 Linux
+- [CompositorLX](https://github.com/ClaudiuJitea/compositorLX)，由 [@ClaudiuJitea](https://github.com/ClaudiuJitea) 开发：Linux
 
-More are listed in [#23 (Windows)](https://github.com/robbietilton/Compositor/issues/23) and [#19 (Linux)](https://github.com/robbietilton/Compositor/issues/19).
+更多项目见 [#23（Windows）](https://github.com/robbietilton/Compositor/issues/23) 和 [#19（Linux）](https://github.com/robbietilton/Compositor/issues/19)。
 
-## Building
+## 构建
 
-Open `Compositor.xcodeproj` and run the **Compositor** scheme.
+打开 `Compositor.xcodeproj` 并运行 **Compositor** scheme。
 
-## Releasing
+## 发布
 
-`scripts/release.sh` builds a Release version, signs it with Developer ID, notarizes and staples it, and packages it into `dist/Compositor-<version>.dmg`.
+运行 `scripts/release.sh` 可构建 Release 版本、使用 Developer ID 签名、进行公证并附加公证票据，最终打包为 `dist/Compositor-<version>.dmg`。
 
-It needs, all kept outside this repository:
+所需内容均须保存在本仓库之外：
 
-- a **Developer ID Application** certificate in the login keychain
-- notarization credentials saved with `xcrun notarytool store-credentials "compositor-notary" …`
-- [`create-dmg`](https://github.com/create-dmg/create-dmg) (`brew install create-dmg`)
+- 登录钥匙串中的 **Developer ID Application** 证书
+- 使用 `xcrun notarytool store-credentials "compositor-notary" …` 保存的公证凭证
+- [`create-dmg`](https://github.com/create-dmg/create-dmg)（`brew install create-dmg`）
 
-## License
+## 许可证
 
-MIT — see [LICENSE](LICENSE).
+MIT，详见 [LICENSE](LICENSE)。
 
-Volumetric Light's depth model, DepthMini, is distilled from [Depth Anything V2 Small](https://github.com/DepthAnything/Depth-Anything-V2)
-(Apache-2.0) and starts from torchvision's ImageNet-trained MobileNetV3 weights (BSD-3-Clause). It isn't in the app:
-it's downloaded the first time Volumetric Light opens.
+体积光所用的深度模型 DepthMini 基于 [Depth Anything V2 Small](https://github.com/DepthAnything/Depth-Anything-V2)（Apache-2.0）蒸馏而成，并以 torchvision 使用 ImageNet 训练的 MobileNetV3 权重为起点（BSD-3-Clause）。该模型不包含在应用中，首次打开体积光时会下载。
