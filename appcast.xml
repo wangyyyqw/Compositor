@@ -3,17 +3,17 @@
   <channel>
     <title>Compositor</title>
     <item>
-      <title>Version 1.6.13</title>
-      <pubDate>Wed, 18 Nov 2026 03:47:39 +0000</pubDate>
-      <sparkle:version>72</sparkle:version>
-      <sparkle:shortVersionString>1.6.13</sparkle:shortVersionString>
+      <title>Version 1.6.15</title>
+      <pubDate>Sat, 21 Nov 2026 05:29:29 +0000</pubDate>
+      <sparkle:version>74</sparkle:version>
+      <sparkle:shortVersionString>1.6.15</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>26.0</sparkle:minimumSystemVersion>
-      <link>https://github.com/robbietilton/Compositor/releases/tag/v1.6.13</link>
-      <changes><![CDATA[Export as a layered PSD for Photoshop and After Effects, keeping layers, folders, masks and clipping
-Shapes show while you drag them out, even when a hidden layer is selected
-With a folder selected, new shapes and text go to the top inside the folder
-New shapes use your foreground color, and the Fill swatch shows the color your next shape will be]]></changes>
-      <enclosure url="https://github.com/robbietilton/Compositor/releases/download/v1.6.13/Compositor.dmg" sparkle:edSignature="5Vn4dqBufsiFQKfv/W9iEIfX8WcXORQ9WlK2jun9gRbn89iKOFXhhlDwBX2DMzmCAo/IO5ZAWEgmGuOMzNESDw==" length="8940170" type="application/octet-stream"/>
+      <link>https://github.com/robbietilton/Compositor/releases/tag/v1.6.15</link>
+      <changes><![CDATA[剪贴蒙版现在会随基底图层一起隐藏，可通过堆栈中的任一眼睛按钮重新显示，复制时也会保持关联
+修复按住 Option 拖动复制图层时偶尔失效的问题
+现在按 Return 可完成变换数值或文字字号的输入
+选中图层面板时，按 F 也可切换全屏]]></changes>
+      <enclosure url="https://github.com/robbietilton/Compositor/releases/download/v1.6.15/Compositor.dmg" sparkle:edSignature="6nT8nF2dJ/5LJ6k8E48fEG2Q8J0SHZ7CIQmR2+1SU/txOx791F8gKuaNaqo9zsV93F99v45dnS4XD9X314bdAw==" length="8957026" type="application/octet-stream"/>
     </item>
   </channel>
 </rss>
